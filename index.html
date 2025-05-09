@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Console de Senhas</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #33ff33;
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    h1 {
+      font-size: 2em;
+      text-shadow: 0 0 10px #33ff33;
+      margin-bottom: 20px;
+    }
+    #output {
+      border: 1px solid #33ff33;
+      padding: 20px;
+      background-color: #000;
+      min-height: 150px;
+      white-space: pre-wrap;
+      margin-bottom: 20px;
+    }
+    button {
+      background-color: #000;
+      color: #33ff33;
+      border: 1px solid #33ff33;
+      padding: 10px 20px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #33ff33;
+      color: #000;
+    }
+    .blinking {
+      animation: blink 1s step-start infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <h1>[Console de Geração de Senhas]</h1>
+
+  <div id="output">Inicializando sistema...</div>
+
+  <button onclick="gerarSenha()">↻ Gerar nova senha</button>
+
+  <script>
+    function digitarTexto(elemento, texto, delay = 30) {
+      elemento.textContent = '';
+      let i = 0;
+      function escrever() {
+        if (i < texto.length) {
+          elemento.textContent += texto[i++];
+          setTimeout(escrever, delay);
+        } else {
+          elemento.innerHTML += '<span class="blinking">_</span>';
+        }
+      }
+      escrever();
+    }
+
+    function gerarSenha() {
+      const letras = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const numeros = '0123456789';
+      const simbolos = '!@#$%&*()-_=+<>?';
+      const chars = letras + numeros + simbolos;
+      const tamanho = Math.floor(Math.random() * 10) + 12; // entre 12 e 22
+
+      let senha = '';
+      for (let i = 0; i < tamanho; i++) {
+        senha += chars[Math.floor(Math.random() * chars.length)];
+      }
+
+      const texto = `
+[Sistema] Requisição recebida.
+[Processando] Gerando senha segura...
+[OK] Senha criada com sucesso.
+
+Senha →  ${senha}
+`;
+
+      const output = document.getElementById('output');
+      digitarTexto(output, texto, 15);
+    }
+
+    // Gerar senha automaticamente ao abrir
+    window.onload = gerarSenha;
+  </script>
+</body>
+</html>
